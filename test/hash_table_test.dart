@@ -40,4 +40,25 @@ main() {
       expect(result, value);
     });
   });
+
+  group('size', () {
+    test('empty = 0', () {
+      expect(table.size, 0);
+    });
+
+    test('insert 1 = 1', () {
+      table.insert('k', 10);
+
+      expect(table.size, 1);
+    });
+
+    test('insert n = n', () {
+      final n = 100;
+      for (int i = 0; i < n; ++i) {
+        table.insert(i.toString(), i);
+      }
+
+      expect(table.size, n);
+    });
+  });
 }
