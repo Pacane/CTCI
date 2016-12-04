@@ -60,5 +60,23 @@ main() {
 
       expect(table.size, n);
     });
+
+    group('collisions', () {
+      test('0 item, 0 collision', () {
+        final nbCollisions = table.collisions;
+
+        expect(nbCollisions, 0);
+      });
+
+      test('1 item, 0 collision', () {
+        table.insert('a', 12);
+
+        final nbCollisions = table.collisions;
+
+        expect(nbCollisions, 0);
+      });
+
+
+    });
   });
 }

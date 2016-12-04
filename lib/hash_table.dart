@@ -1,22 +1,28 @@
 class HashTable<K extends Object, V> {
-  List<List<Tuple<K, V>>> values = [];
-  final int initialSize;
+  List<List<Tuple<K, V>>> buckets = [];
+  int capacity;
   int _size = 0;
 
-  HashTable({this.initialSize = 11}) {
-    values = new List(initialSize);
+  HashTable({this.capacity = 11}) {
+    buckets = new List(capacity);
   }
 
   int get size => _size;
+  int get collisions => buckets.fold(
+      0,
+      (prev, bucket) =>
+          bucket != null && bucket.length > 1 ? prev + bucket.length : 0);
+  num get loadPercentage => buckets.fold(
+      0, (prev, bucket) => bucket != null ? prev + bucket.length : 0);
 
   void insert(K key, V value) {
-    final hashedKey = key.hashCode % initialSize;
-    final bucket = values[hashedKey];
+    final hashedKey = key.hashCode % capacity;
+    final bucket = buckets[hashedKey];
     final record = new Tuple(key, value);
 
     if (bucket == null) {
       final sublist = <Tuple<K, V>>[];
-      values[hashedKey] = sublist;
+      buckets[hashedKey] = sublist;
       sublist.add(record);
     } else {
       if (bucket.any((Tuple<K, V> t) => t.first == record.first)) {
@@ -31,9 +37,9 @@ class HashTable<K extends Object, V> {
   }
 
   V get(K key) {
-    final hashedKey = key.hashCode % initialSize;
+    final hashedKey = key.hashCode % capacity;
     final matchingRecord =
-        values[hashedKey]?.firstWhere((Tuple<K, V> t) => t.first == key);
+        buckets[hashedKey]?.firstWhere((Tuple<K, V> t) => t.first == key);
     return matchingRecord?.second;
   }
 }
