@@ -19,8 +19,9 @@ class HashTable<K extends Object, V> {
       values[hashedKey] = sublist;
       sublist.add(record);
     } else {
-      if (bucket.contains(record)) {
-        throw new Exception("Can't add duplicate items in table");
+      if (bucket.any((Tuple<K, V> t) => t.first == record.first)) {
+        throw new ArgumentError.value(
+            "Can't add duplicate items in table : $key, $value");
       }
 
       bucket.add(record);
