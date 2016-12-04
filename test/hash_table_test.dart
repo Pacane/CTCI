@@ -75,8 +75,33 @@ main() {
 
         expect(nbCollisions, 0);
       });
+    });
 
+    group('load percentage', () {
+      test('0 = 0', () {
+        print(12);
+        final load = table.loadPercentage;
 
+        expect(load, 0);
+      });
+
+      test('1/11% with 1 inserted when default capacity in place', () {
+        table.insert('a', 2);
+
+        final load = table.loadPercentage;
+
+        expect(load, 1 / 11 * 100);
+      });
+
+      test('200% with 22 inserted when default capacity in place', () {
+        for (int i = 0; i < 22; ++i) {
+          table.insert(i.toString(), i);
+        }
+
+        final load = table.loadPercentage;
+
+        expect(load, 200);
+      });
     });
   });
 }

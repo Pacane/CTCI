@@ -12,8 +12,9 @@ class HashTable<K extends Object, V> {
       0,
       (prev, bucket) =>
           bucket != null && bucket.length > 1 ? prev + bucket.length : 0);
-  num get loadPercentage => buckets.fold(
-      0, (prev, bucket) => bucket != null ? prev + bucket.length : 0);
+  num get loadPercentage {
+    return size * 100 / capacity;
+  }
 
   void insert(K key, V value) {
     final hashedKey = key.hashCode % capacity;
