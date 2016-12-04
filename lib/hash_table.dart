@@ -29,6 +29,13 @@ class HashTable<K extends Object, V> {
 
     _size++;
   }
+
+  V get(K key) {
+    final hashedKey = key.hashCode % initialSize;
+    final matchingRecord =
+        values[hashedKey]?.firstWhere((Tuple<K, V> t) => t.first == key);
+    return matchingRecord?.second;
+  }
 }
 
 class Tuple<T1, T2> {
